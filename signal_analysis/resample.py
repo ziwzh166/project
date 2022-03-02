@@ -37,11 +37,13 @@ class Resample:
         # signal_rebuilt = signal.resample_poly(sig_ori,ts,Fs )
         # 
         # =============================================================================
-        mat = scipy.io.loadmat('resampled_low_noise_data.mat')
+        mat = scipy.io.loadmat(self.filename)
         t =np.arange(len(mat['data']))*(1/mat['Fs'])
         t = t.T
         signal = np.array(mat['data'])
-        Fs = np.array(mat['Fs'])
+        Fs = np.array(mat['Fs']).reshape(1,)
+        Fs = Fs[0]
+        signal = signal[:,0]
         return signal,t,Fs
         
     def PlotSignal(self):
