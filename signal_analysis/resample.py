@@ -44,6 +44,7 @@ class Resample:
         Fs = np.array(mat['Fs']).reshape(1,)
         Fs = Fs[0]
         signal = signal[:,0]
+        t = t[:,0]
         return signal,t,Fs
         
     def PlotSignal(self):
