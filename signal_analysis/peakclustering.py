@@ -39,7 +39,8 @@ class PeakClustering():
         return peaks,peak_properties
     
     def ClusteringPeaks(self):
-        pass
+        peaks,peaks_properties = self.FindPeaks()
+        
         
         
         
