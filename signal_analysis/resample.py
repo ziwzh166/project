@@ -15,8 +15,8 @@ class Resample:
         self.filename = filename
     
     def resampleSignal(self):        
-        # import signal from matlab, the scipy resample function doesn't cannot perform 
-        # the case when there is only incomplete time domain and frequency rate
+        # import signal from matlab, the scipy resample function cannot perform 
+        # in the case when there is only incomplete time domain and frequency rate
         # =============================================================================
         # import numpy as np
         # import pandas as pd
@@ -48,8 +48,9 @@ class Resample:
         return signal,t,Fs
         
     def PlotSignal(self):
-        fig1,ax1 = plt.plot()
-        plt.plot(self.t,self.signal)
-        plt.set_xlabel('Time/s')
-        plt.set_ylabel('Current/PA')
-        plt.set_title('Raw data')
+        signal,t,_ = self.resampleSignal()
+        plt.plot(dpi = 600)
+        plt.plot(t,signal)
+        plt.xlabel('Time/s')
+        plt.ylabel('Current/PA')
+        plt.title('Raw data')
