@@ -24,6 +24,7 @@ class PreDenoise:
             #plot Stft graph                        
             #mesh plot
             cmap = 'Spectral'
+            plt.figure(figsize=(12, 10))
             ax1 = plt.pcolormesh(ts, f, np.abs(Zxx),cmap = cmap, shading='gouraud')
             plt.ylim([f[1], f[1]*5])
             plt.title('STFT Magnitude')
@@ -47,6 +48,7 @@ class PreDenoise:
         
         Plot_stft = input("If you want to see the denoised plot Y/n: ")
         if Plot_stft == 'Y' or Plot_stft == 'y':
+            plt.figure(figsize=(12, 10))
             fig, (axs1,axs2) = plt.subplots(2,sharex=True,dpi=600)
             fig.suptitle('Plots for resampled signal with stft filtered')
             axs1.plot(self.t,self.x)
@@ -64,9 +66,10 @@ class PreDenoise:
         wave = input('input the name mother wave to decompose, eg.db1,default sym4: ')
         if wave == '':
             wave = 'sym4'
-        level = input('input the level for composation, a scala: ')
+        level = input('input the level for composation, a scala better not over 5: ')
         if level == "":
             level = 3
+        level = int(level)
         #even value for inputing in swt
         if len(self.x%2) != 0:
             #without putting -1 cannot output the array
@@ -90,6 +93,7 @@ class PreDenoise:
             t1 = self.t
         Plot_swt = input("If you want to see the denoised plot Y/n: ")
         if Plot_swt == 'Y' or Plot_swt == 'y':
+            plt.figure(figsize=(12, 10))
             fig, axs = plt.subplots(level, sharex=True,dpi=600)
             for i in range (level):
                 axs[i].plot(t1, x_A[:,i])

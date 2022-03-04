@@ -31,9 +31,13 @@ class PeakClustering():
         # width_peak = signal.peak_widths(x_offset_r, peaks, rel_height=1)
         Plot_peaks = input("If you want to see the curve with found peaks Y/n: ")
         if Plot_peaks == 'Y' or Plot_peaks == 'y':
+            t1 = self.t[peaks]
+            x1 = self.x[peaks]
+            #print(type(peaks_I),type(t1),type(x1))
+            plt.figure(figsize=(12, 10))
             plt.plot(dpi = 600)
-            plt.plot(self.t,self.x,label = "signal")
-            plt.scatter(self.t[peaks], self.x[peaks], "x", label = 'peaks')
+            plt.plot(self.t,self.x ,label = "signal")
+            plt.scatter(t1, x1, marker = "x",color = 'gold', label = 'peaks')
             plt.xlabel( 'Time [sec]')
             plt.ylabel ('Current [PA]')
             plt.legend()
@@ -51,6 +55,7 @@ class PeakClustering():
         #plot the distribution 
         Plot_peaks_b = input("If you want to see the distribution of peaks Y/n: ")
         if Plot_peaks_b == 'Y' or Plot_peaks_b == 'y':
+            plt.figure(figsize=(12, 10))
             plt.plot(dpi = 600)
             plt.scatter(peaks_feature[:,0],peaks_feature[:,1],label = "undefined signal")
             plt.xlabel( 'Peak height')
@@ -65,6 +70,7 @@ class PeakClustering():
             km = km.fit(peaks_feature)
             intertia.append(km.inertia_)
         #plot 15 iterations of clustering interia
+        plt.figure(figsize=(12, 10))
         plt.plot(K, intertia, marker= "x")
         plt.xlabel('k')
         plt.xticks(np.arange(15))
@@ -72,9 +78,11 @@ class PeakClustering():
         plt.title('Elbow Curve')
         plt.show()
         #define the clustering numbers according to the curve
-        cluster_num = input('Input at which cluster numbers according to the curve: ')
+        cluster_num = input('Input at which cluster numbers according to the curve, dafult.5: ')
         if cluster_num == '':
             cluster_num = 5
+        else:
+            cluster_num = int(cluster_num) 
         km = KMeans(n_clusters = cluster_num, n_init = cluster_num, 
                     init = "random", random_state = 50)
         km.fit(peaks_feature)
@@ -82,27 +90,31 @@ class PeakClustering():
         colors = cm.rainbow(np.linspace(0, 1, cluster_num))
         
         #plot the cluster distribution
+        plt.figure(figsize=(12, 10))
         plt.plot(dpi = 600)
         for (i,color) in zip(range(cluster_num),colors):
             m = np.where(Cluster_pred == i)
             plt.scatter(peaks_feature[:,0][m],peaks_feature[:,1][m],
                         label = i, color = color)
-        plt.xlabel( 'Peak height')
+        plt.xlabel('Peak height')
         plt.ylabel ('peak width')
         plt.legend()
         plt.show()
         #plot the original peaks on the signal plot
-        #need to be debugged
+        plt.figure(figsize=(12, 10))
         plt.plot(dpi = 600)
         plt.plot(self.t,self.x,label = "signal")
         for (i,color) in zip(range(cluster_num),colors):
             m = np.where(Cluster_pred == i)
-            plt.scatter(self.t[peaks[m]], self.x[peaks[m]], "x",
+            t1 = self.t[peaks[m]]
+            x1 = self.x[peaks[m]]
+            plt.scatter(t1, x1, marker = "x",
                         label = 'peaks'+''+str(i), color = color)
         plt.xlabel( 'Peak height')
         plt.ylabel ('peak width')
         plt.legend()
         plt.show()
+        return km,Cluster_pred
         
         
         

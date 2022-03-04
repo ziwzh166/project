@@ -49,6 +49,7 @@ class Resample:
         
     def PlotSignal(self):
         signal,t,_ = self.resampleSignal()
+        plt.figure(figsize=(12, 10))
         plt.plot(dpi = 600)
         plt.plot(t,signal)
         plt.xlabel('Time/s')
